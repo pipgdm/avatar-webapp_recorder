@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  
+  <head><title>Blendshape Saver</title></head>
+  <body>
+    <div id="root"></div>
+    <button id="downloadBtn">Download Blendshapes</button>
+
+    <script>
+      const frames = [
+        {
+          timestamp: Date.now(),
+          blendshapes: [{ name: 'mouthSmileLeft', score: 0.88 }]
+        },
+        {
+          timestamp: Date.now() + 33,
+          blendshapes: [{ name: 'mouthSmileLeft', score: 0.91 }]
+        }
+      ];
+
+      document.getElementById('downloadBtn').onclick = () => {
+        const blob = new Blob([JSON.stringify(frames, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "blendshapes_recording.json";
+        a.click();
+        URL.revokeObjectURL(url);
+      };
+    </script>
+    
+  </body>
+</html>
