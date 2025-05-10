@@ -1,0 +1,27 @@
+[
+    {
+      "timestamp": 1680000000000,
+      "blendshapes": [
+        { "categoryName": "jawOpen", "score": 0.1 },
+        { "categoryName": "mouthSmileLeft", "score": 0.4 },
+        { "categoryName": "mouthSmileRight", "score": 0.3 }
+      ]
+    },
+    {
+      "timestamp": 1680000000100,
+      "blendshapes": [
+        { "categoryName": "jawOpen", "score": 0.6 },
+        { "categoryName": "mouthSmileLeft", "score": 0.8 },
+        { "categoryName": "mouthSmileRight", "score": 0.7 }
+      ]
+    },
+    {
+      "timestamp": 1680000000200,
+      "blendshapes": [
+        { "categoryName": "jawOpen", "score": 0.2 },
+        { "categoryName": "mouthSmileLeft", "score": 0.5 },
+        { "categoryName": "mouthSmileRight", "score": 0.5 }
+      ]
+    }
+  ]
+  

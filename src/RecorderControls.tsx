@@ -1,70 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { blendshapeRecorder } from './blendshaper_recorder';
+import React, { useState } from 'react';
+import { blendshapeRecorder } from './blendshaper_recorder'; // ✅ path must match your file
 
-interface Props {
-  setIsRecording: (value: boolean) => void;
-}
+const RecorderControls = ({ setIsRecording }) => {
+  const [recording, setRecording] = useState(false);
 
-const RecorderControls: React.FC<Props> = ({ setIsRecording }) => {
-  const [isRecording, setRecordingState] = useState(false);
-  const [seconds, setSeconds] = useState(0);
-  const [savedMessage, setSavedMessage] = useState('');
+  const toggleRecording = () => {
+    const newState = !recording;
+    setRecording(newState);
+    setIsRecording(newState); // ✅ THIS is what makes App update
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isRecording) {
-      interval = setInterval(() => setSeconds((s) => s + 1), 1000);
+    if (!newState) {
+      console.log("🟢 Stopped recording, downloading...");
+      console.log("💾 Frame count:", blendshapeRecorder['frames']?.length);
+      blendshapeRecorder.download();
     } else {
-      setSeconds(0);
-      clearInterval(interval);
+      console.log("🔴 Started recording, clearing previous data...");
+      blendshapeRecorder.clear();
     }
-    return () => clearInterval(interval);
-  }, [isRecording]);
-
-  const startRecording = () => {
-    blendshapeRecorder.clear();
-    setRecordingState(true);
-    setIsRecording(true);
-  };
-
-  const stopRecording = () => {
-    setRecordingState(false);
-    setIsRecording(false);
-    blendshapeRecorder.download("blendshapes_recording");
-    setSavedMessage("✅ Saved to 'blendshapes_recording.json'");
-    setTimeout(() => setSavedMessage(''), 4000);
   };
 
   return (
-    <div style={{
-      position: 'absolute',
-      top: 20,
-      left: 20,
-      zIndex: 999,
-      background: 'rgba(0,0,0,0.6)',
-      padding: '12px',
-      borderRadius: '8px',
-      color: 'white',
-      fontFamily: 'sans-serif',
-      width: 'fit-content',
-      boxShadow: '0 0 8px rgba(0,0,0,0.3)'
-    }}>
-      <button onClick={startRecording} style={{ marginRight: 8 }}>▶ Start</button>
-      <button onClick={stopRecording}>⏹ Stop</button>
-
-      {isRecording && (
-        <div style={{ color: 'red', fontSize: '14px', marginTop: 8 }}>
-          ● Recording... {String(Math.floor(seconds / 60)).padStart(2, '0')}:
-          {String(seconds % 60).padStart(2, '0')}
-        </div>
-      )}
-
-      {savedMessage && (
-        <div style={{ color: 'lightgreen', fontSize: '12px', marginTop: 6 }}>
-          {savedMessage}
-        </div>
-      )}
-    </div>
+    <button onClick={toggleRecording}>
+      {recording ? "Stop Recording" : "Start Recording"}
+    </button>
   );
 };
 
